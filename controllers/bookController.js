@@ -49,9 +49,22 @@ let updateBook = (req,res) => {
   })
 }
 
+let deleteBook = (req,res) => {
+  MongoClient.connect(url, (err,db) => {
+    if (err) res.send(err)
+    var id = {_id: ObjectID(req.params.id)}
+    db.collection("books").remove(id,(req,result) => {
+      if (err) res.send(err)
+      console.log(result);
+      res.send(result);
+      db.close();
+    })
+  })
+}
 
 module.exports = {
   createBook,
   getAllBooks,
-  updateBook
+  updateBook,
+  deleteBook
 }
